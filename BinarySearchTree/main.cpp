@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include "BST312.h"
+#include <vector>
 
 using namespace std;
 
@@ -35,22 +36,22 @@ int main() {
     }
 
     cout << "postorder traversal is " << endl;
-    print(bst.postOrderTraversal());
+//    print(bst.postOrderTraversal());
     cout << endl;
 
     cout << "preorder traversal is " << endl;
-    print(bst.preOrderTraversal());
+//    print(bst.preOrderTraversal());
     cout << endl;
 
     cout << "inorder traversal is " << endl;
-    print(bst.inOrderTraversal());
+//    print(bst.inOrderTraversal());
     cout << endl;
 
     cout << "Remove items " << endl;
     cout << "number of nodes in tree before delete is " << bst.countNodes() << endl;
     s = "tree";
     bst.deleteItem(s);
-    print(bst.postOrderTraversal());
+//    print(bst.postOrderTraversal());
     cout << endl;
     cout << "number of nodes in tree after delete is " << bst.countNodes() << endl;
     cout << endl;
