@@ -309,27 +309,48 @@ template<class ItemType>
 void BST_312 <ItemType>::insertItem(TreeNode*& t, const ItemType& newItem)
 {
 
-   TreeNode *temp = root; // do not want the root to be changed.
-   
-   while (temp != NULL) {
-  
-      if (temp -> data < newItem) { // move pointer in direction where value is expected. 
+   TreeNode *parent = NULL;
+   TreeNode *insertion = new TreeNode;
+   insertion -> left = NULL;
+   insertion -> right = NULL;
+   insertion -> data = newItem; // data written in and pointers be pointing.
 
-         temp -> left;
+   if (root == NULL) { 
+
+      root = insertion;
+      return;
+
+   }
+
+   while (t != NULL) { // makes NULL to where left or right should be. falls out when either is NULL.
+  
+      parent = t;
+
+      if (newItem < t -> data) { // move pointer in direction where value is expected. 
+
+         t = t -> left;             
 
       } else { // if the value is greater than or eqaul go right.
 
-         temp -> right; 
+         t = t -> right; 
 
       }
 
    }
 
    // where the actual insertion occurs once sorted.
-   TreeNode *insertion = new TreeNode;
-   temp = insertion;
-   temp -> data = newItem; // data written in and pointers be pointing.
+   if (newItem < parent -> data) {
 
+      parent -> left = insertion;
+
+   } else { 
+
+      parent -> right = insertion;
+
+   }
+
+   return;
+  
 }
 
 
@@ -337,7 +358,9 @@ template<class ItemType>
 void BST_312 <ItemType>::insertItem(const ItemType& newItem)
 {
 
-   insertItem(root, newItem);
+   TreeNode *temp = root;
+
+   insertItem(temp, newItem);
 
 }
 
@@ -347,67 +370,43 @@ template<class ItemType>
 int BST_312 <ItemType>::countNodes(TreeNode* t) const
 {
 
-   int numNodes = 0;
-   TreeNode *temp = t;
-
-   if (temp == NULL) { // once all have been found should add up to the total number.
+   if (t == NULL) { // once all have been found should add up to the total number.
    
-      return numNodes;
+      return 0;
 
-   } else if (temp -> left != NULL) { // if statements for navigation.
+   } 
 
-      countNodes(temp -> left);
-
-   } else if (temp -> right != NULL) { 
-
-      countNodes(temp -> right); 
-
-   } else {
-
-      numNodes ++; // increments when it leaves the nodes.
-
-   }
-
-   return numNodes;
+   return 1 + countNodes(t -> left) + countNodes(t -> right);
 
 }
 
 
 template<class ItemType>
 int BST_312 <ItemType>::countNodes()
-{
-   return countNodes(root);
+{ 
+
+   TreeNode *temp = root;
+   
+   return countNodes(temp);
+
 }
 
 
 template<class ItemType>
 void BST_312 <ItemType>::preOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
-    
-   TreeNode *temp = t;
 
-   if (temp == NULL) { // once all have been found should add up to the total number.
+   if (t == NULL) { // once all have been found should add up to the total number.
    
       return;
 
    }
 
-   if (temp != NULL) {
+   result.push_back(t -> data); // should put the nodes data into the vector called result
 
-      result.push_back(temp -> data); // should put the nodes data into the vector called result
+   preOrderTraversal(t -> left, result);
 
-   } else if (temp -> left != NULL) { // if statements for navigation.
-
-      preOrderTraversal(temp -> left);
-
-   } else if (temp -> right != NULL) { 
-
-      preOrderTraversal(temp -> right); 
-
-   }
-
-   return; // should just return after traversal, since the work is done at the begining of the recursion.
-   
+   preOrderTraversal(t -> right, result); 
 
 }
 
@@ -417,8 +416,9 @@ vector<ItemType> BST_312 <ItemType>::preOrderTraversal()
 {
 
    vector<ItemType> result;
+   TreeNode *temp = root;
 
-   preOrderTraversal(root, result);
+   preOrderTraversal(temp, result);
 
    return result;
 
@@ -429,29 +429,17 @@ template<class ItemType>
 void BST_312 <ItemType>::inOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
 
-   TreeNode *temp = t;
-
-   if (temp == NULL) { // once all have been found should add up to the total number.
+   if (t == NULL) { // once all have been found should add up to the total number.
    
       return;
 
    }
 
-   if (temp -> left != NULL) {
+   inOrderTraversal(t -> left, result);
 
-      inOrderTraversal(temp -> left);
+   result.push_back(t -> data); // should put the nodes data into the vector called result
 
-   } else if (temp != NULL) { // if statements for navigation.
-
-      result.push_back(temp -> data); // should put the nodes data into the vector called result
-
-   } else if (temp -> right != NULL) { 
-
-      inOrderTraversal(temp -> right); 
-
-   }
-
-   return; // should just return after traversal, since the work is done at the begining of the recursion.
+   inOrderTraversal(t -> right, result); 
 
 }
 
@@ -461,8 +449,9 @@ vector<ItemType> BST_312 <ItemType>::inOrderTraversal()
 {
 
    vector<ItemType> result;
+   TreeNode *temp = root;
 
-   inOrderTraversal(root, result);
+   inOrderTraversal(temp, result);
 
    return result;
 }
@@ -472,29 +461,17 @@ template<class ItemType>
 void BST_312 <ItemType>::postOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
 
-   TreeNode *temp = t;
-
-   if (temp == NULL) { // once all have been found should add up to the total number.
+   if (t == NULL) { // once all have been found should add up to the total number.
    
       return;
 
    }
 
-   if (temp -> left != NULL) {
+   postOrderTraversal(t -> left, result);
 
-      postOrderTraversal(temp -> left);
+   postOrderTraversal(t -> right, result); 
 
-   } else if (temp -> right != NULL) { 
-
-      postOrderTraversal(temp -> right); 
-
-   } else if (temp != NULL) { // if statements for navigation.
-
-      result.push_back(temp -> data); // should put the nodes data into the vector called result
-
-   }
-
-   return; // should just return after traversal, since the work is done at the begining of the recursion.
+   result.push_back(t -> data); // should put the nodes data into the vector called result
 
 }
 
@@ -504,8 +481,9 @@ vector<ItemType> BST_312 <ItemType>::postOrderTraversal()
 {
 
    vector<ItemType> result;
+   TreeNode *temp = root;
 
-   postOrderTraversal(root, result);
+   postOrderTraversal(temp, result);
 
    return result;
 
@@ -526,13 +504,13 @@ bool BST_312 <ItemType>::isItemInTree(const ItemType& item)
 
       }
   
-      if (temp -> data < item) { // move pointer in direction where value is expected. 
+      if (item < temp -> data) { // move pointer in direction where value is expected. 
 
-         temp -> left;
+         temp = temp -> left;
 
       } else {
 
-         temp -> right;
+         temp = temp -> right;
 
       }
 
